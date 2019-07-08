@@ -1,49 +1,238 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+        <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+        <link rel="stylesheet" href="css/reset.css">
+        <link rel="stylesheet" href="css/reveal.css">
+        <link rel="stylesheet" href="css/theme/moon.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+        <!-- Theme used for syntax highlighting of code -->
+        <link rel="stylesheet" href="lib/css/monokai.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+    </head>
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-markdown>
+                    ## Introducing Coordinator pattern  
+                    ##### Highly maintainable iOS architecture
+                    by Anderson
+                </section>
+                <section>
+                    <section data-markdown data-background-video="media/me.mp4" data-background-video-loop="true" data-background-video-muted="true" data-background-opacity="0.35">
+                        ## WHO AM I?
 
-		<script src="js/reveal.js"></script>
+                        Freelancing Fullstack Software Developer  
+                        +14 years of eyperience 
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+                        Many hobbies, Sim Racing, Surfing, Photography, Design, Learning new stuff
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            Working hard on   
+                            [codexperience.io](http://codexperience.io)
+
+                            anderson@codexperience.io
+                        </div>
+                        <aside data-markdown>
+                            * Working on my next project codexperience.io
+                            * No Twitter
+                            * you can reach me at anderson@codexperience.io
+                        </aside>
+                    </section>
+                </section>
+                <section>
+                    <section data-markdown>
+                        # Coordinator Pattern
+                        ## Has anyone heard of it?
+
+                        <aside data-markdown>
+                           * What is the Coordinator pattern?
+                        </aside>
+                    </section>
+                    <section data-markdown data-background-video="media/why.mp4" data-background-video-loop="true" data-background-video-muted="true">
+                        ## Start with why...
+
+                        <aside data-markdown>
+                           * 
+                        </aside>
+                    </section>
+                    <section data-markdown>
+                        ## First, an example app
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown data-background-video="media/f1-1.mp4" data-background-video-loop="true" data-background-video-muted="true">
+                        ## Formula 1 App
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            Navigation flow  
+                        </div>
+                        <img class="plain" data-src="media/design-1-diagram.svg" />
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            Implementation  
+                        </div>
+                        <img class="plain" data-src="media/design-1-implementation.svg" />
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            DriversTableViewController                            
+                        </div>
+                        <pre><code class="hljs" data-line-numbers data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <div data-markdown>
+                            DriversTableViewController                            
+                        </div>
+                        <pre><code class="hljs" data-line-numbers="2" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <div data-markdown>
+                            DriversTableViewController                            
+                        </div>
+                        <pre><code class="hljs" data-line-numbers="2-4" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <div data-markdown>
+                            DriversTableViewController                            
+                        </div>
+                        <pre><code class="hljs" data-line-numbers="2-6" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section data-markdown>
+                        ## 2. Version
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            Navigation flow  
+                        </div>
+                        <img class="plain" data-src="media/design-2-diagram.svg" />
+                    </section>
+                    <section data-transition="none">
+                        <img class="plain" data-src="media/design-2-3-diagram.svg" />
+                    </section>
+                    <section>
+                        <div data-markdown>
+                            Implementation  
+                        </div>
+                        <img class="plain" data-src="media/design-2-implementation.svg" />
+                    </section>
+                    <section data-markdown data-background-video="media/f1-2.mp4" data-background-video-loop="true" data-background-video-muted="true">
+                        ## Refactor
+                    </section>
+                    <section>
+                        <pre><code class="hljs" data-line-numbers data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <pre><code class="hljs" data-line-numbers="2" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <pre><code class="hljs" data-line-numbers="2-4" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                    <section data-transition="none">
+                        <pre><code class="hljs" data-line-numbers="2-6" data-trim>
+override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    guard let driver = data[indexPath.section].items[indexPath.row] as? DriverModel else { return }
+    
+    let driverDetailsViewController = DriverDetailsTableViewController(with: driver)
+    
+    self.navigationController?.pushViewController(driverDetailsViewController, animated: true)
+}
+                        </code></pre>
+                    </section>
+                </section>
+
+            </div>
+        </div>
+
+        <script src="js/reveal.js"></script>
+
+        <script>
+            // More info about config & dependencies:
+            // - https://github.com/hakimel/reveal.js#configuration
+            // - https://github.com/hakimel/reveal.js#dependencies
+            Reveal.initialize({
+                dependencies: [
+                    { src: 'plugin/markdown/marked.js' },
+                    { src: 'plugin/markdown/markdown.js' },
+                    { src: 'plugin/notes/notes.js', async: false },
+                    { src: 'plugin/highlight/highlight.js', async: true }
+                ]
+            });
+        </script>
+    </body>
 </html>
